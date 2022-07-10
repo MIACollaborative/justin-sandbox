@@ -5,6 +5,7 @@ import { config } from './config/config';
 import Logging from './lib/Logging';
 import authorRoutes from './routes/Author';
 import bookRoutes from './routes/Book';
+import userRoutes from './routes/User';
 
 const router = express();
 
@@ -54,6 +55,7 @@ const StartServer = () => {
 	/** Routes */
 	router.use('/authors', authorRoutes);
 	router.use('/books', bookRoutes);
+	router.use('/users', userRoutes);
 
 	/** Healthcheck */
 	router.get('/ping', (req, res, next) => res.status(200).json({ message: 'pong' }));
@@ -71,6 +73,7 @@ const StartServer = () => {
 
 	http.createServer(router).listen(config.server.port, () => Logging.info(`Server is running on port ${config.server.port}`));
 
+	// TODO: FINISH FITBIT AUTH
 	// const express = require('express');
 	// const session = require('express-session');
 	// const passport = require('passport');

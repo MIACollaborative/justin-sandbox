@@ -2,7 +2,9 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IUser {
 	username: string;
+	password: string;
 	phone: number;
+	preferredTimes: Date[];
 }
 
 export interface IUserModel extends IUser, Document {}
@@ -10,7 +12,9 @@ export interface IUserModel extends IUser, Document {}
 const UserSchema: Schema = new Schema(
 	{
 		username: { type: String, required: true },
-		phone: { type: Number, required: false }
+		password: { type: String, required: true },
+		phone: { type: Number, required: false },
+		preferredTimes: { type: Date, required: false }
 	},
 	{
 		timestamps: true,

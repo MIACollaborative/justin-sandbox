@@ -9,10 +9,10 @@ const authToken = config.sms.authToken;
 const client = require('twilio')(accountSid, authToken);
 
 // TODO: create Twilio type and replace 'message: any'
-client.messages
-	.create({
-		body: 'Are you sure about that?',
-		from: '+18644771514',
-		to: '+18455317988'
-	})
-	.then((message: any) => console.log(message.sid));
+// client.messages
+// 	.create({
+// 		body: 'Are you sure about that?',
+// 		from: '+18644771514',
+// 		to: '+18455317988'
+// 	})
+// 	.then((message: any) => console.log(message.sid));
