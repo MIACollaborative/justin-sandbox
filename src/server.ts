@@ -6,6 +6,9 @@ import Logging from './lib/Logging';
 import authorRoutes from './routes/Author';
 import bookRoutes from './routes/Book';
 import userRoutes from './routes/User';
+// TODO: unistall 'passport-oauth2' package
+const passport = require('passport');
+require('./FitbitAuth');
 
 const router = express();
 
@@ -59,6 +62,18 @@ const StartServer = () => {
 
 	/** Healthcheck */
 	router.get('/ping', (req, res, next) => res.status(200).json({ message: 'pong' }));
+
+	router.get('/', (req, res) => {
+		res.send('<a href="/auth/fitbit">Authenticate with fitbit</a>');
+	});
+
+	router.get('/auth/fitbit', passport.authenticate('fitbit', { scope: ['sleep'] }));
+
+	router.get('/protected', (req, res) => {
+		res.send('Hello!');
+	});
+
+	router.listen(5000, () => console.log('listening on port: 5000'));
 
 	/** Error handling */
 	router.use((req, res, next) => {

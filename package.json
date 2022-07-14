@@ -19,6 +19,7 @@
 		"joi": "^17.6.0",
 		"mongoose": "^6.4.0",
 		"node-fetch": "^2.6.1",
+		"passport": "^0.6.0",
 		"passport-fitbit-oauth2": "^1.0.2",
 		"passport-oauth2": "^1.6.1",
 		"twilio": "^3.78.0"
