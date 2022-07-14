@@ -26,6 +26,11 @@ const getTriggerFunc = (triggerStr: string): (() => boolean) | false => {
 	return false;
 };
 
+// TODO: FINISH
+export const markTimeTriggerHasRunTrue = (triggerFunc: () => boolean): boolean => {
+	return true;
+};
+
 const randomize = (randomizeFactor: number) => {
 	if (Math.random() < randomizeFactor) {
 		return true;

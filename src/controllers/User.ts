@@ -54,11 +54,6 @@ const updateUser = (req: Request, res: Response, next: NextFunction) => {
 };
 
 async function updateUserPreferredTimes(userId: string, preferredTimes: [Date, Date, Date]) {
-	Logging.log(
-		JSON.stringify({
-			preferredTimes: preferredTimes
-		})
-	);
 	try {
 		// 👇️ const response: Response
 		const response = await fetch(`http://localhost:9090/users/update/${userId}`, {
@@ -80,9 +75,47 @@ async function updateUserPreferredTimes(userId: string, preferredTimes: [Date, D
 		// 👇️ const result: UpdateUserPreferredTimesResponse
 		const result = (await response.json()) as IUser;
 
-		console.log('result is: ', JSON.stringify(result, null, 4));
+		Logging.log('RESPONSE: ' + JSON.stringify(result, null, 4));
 
 		return result;
+	} catch (error) {
+		if (error instanceof Error) {
+			Logging.error('error message: ' + error.message);
+			return error.message;
+		} else {
+			Logging.error('unexpected error: ' + error);
+			return 'An unexpected error occurred';
+		}
+	}
+}
+
+// TODO: replace params with just user model and use user.fitbit.accessToken etc.
+async function getUserTimezoneFromFitbit(fitbitId: string, fitbitAccessToken: string): Promise<string> {
+	try {
+		// 👇️ const response: Response
+		// TODO: use https://api.fitbit.com/1/user/-/profile.json for current logged-in user
+		const response = await fetch(`https://api.fitbit.com/1/user/${fitbitId}/profile.json`, {
+			method: 'GET',
+			headers: {
+				// TODO: maybe don't need 'Content-Type', not used in documentation
+				// https://dev.fitbit.com/build/reference/web-api/user/get-profile/
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+				authorization: `Bearer ${fitbitAccessToken}`
+			}
+		});
+
+		if (!response.ok) {
+			Logging.error(response);
+			throw new Error(`Error! status: ${response.status}`);
+		}
+
+		// 👇️ const result: any --> replace any
+		const result = await response.json();
+		Logging.log('RESPONSE: \n\n' + JSON.stringify(result, null, 4));
+
+		let timezone: string = result.timezone;
+		return timezone;
 	} catch (error) {
 		if (error instanceof Error) {
 			Logging.error('error message: ' + error.message);

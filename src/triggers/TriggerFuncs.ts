@@ -6,8 +6,8 @@ export const triggerFuncFalse = (): boolean => {
 	return false;
 };
 
-// TODO: uses local time, use timezone
-export const timeTrigger = (time: Date, timezone: string): boolean => {
+// TODO: uses UTC time, use timezone
+export const timeTriggerUTC = (time: Date): boolean => {
 	let timeNow: Date = new Date();
 	let withinHour: boolean = false;
 	if (
@@ -22,8 +22,11 @@ export const timeTrigger = (time: Date, timezone: string): boolean => {
 	if (withinHour) {
 		let timeMin = time.getUTCMinutes();
 		let currMin = timeNow.getUTCMinutes();
-		// TODO: make 1-2 minute leeway
-		return true;
+		// if the triggered time is right now or at most 2 minutes after current time
+		if (currMin > timeMin && Math.abs(currMin - timeMin) < 2) {
+			// TODO: make sure triggers within 2 cron execution intervals (1-min) don't get executed twice
+			return true;
+		}
 	}
 	return false;
 };

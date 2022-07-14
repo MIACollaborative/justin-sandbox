@@ -6,6 +6,7 @@ export interface IUser {
 	phone: number;
 	preferredTimes: [Date, Date, Date];
 	fitbitId: string;
+	timezone: string;
 }
 
 export interface IUserModel extends IUser, Document {}
@@ -16,7 +17,9 @@ const UserSchema: Schema = new Schema(
 		password: { type: String, required: true },
 		phone: { type: Number, required: false },
 		preferredTimes: { type: [Date, Date, Date], required: false },
-		fitbitId: { type: String, required: false }
+		// TODO: store fitbit model elements in separate fitbit schema
+		fitbitId: { type: String, required: false },
+		timezone: { type: String, required: false }
 	},
 	{
 		timestamps: true,
