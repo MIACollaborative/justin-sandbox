@@ -137,4 +137,4 @@ const deleteUser = (req: Request, res: Response, next: NextFunction) => {
 		.catch((error) => res.status(500).json({ error }));
 };
 
-export default { createUser, readUser, readAll, updateUser, updateUserPreferredTimes, deleteUser };
+export default { createUser, readUser, readAll, updateUser, updateUserPreferredTimes, getUserTimezoneFromFitbit, deleteUser };

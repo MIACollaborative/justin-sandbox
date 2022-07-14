@@ -5,6 +5,7 @@ export interface ITrigger {
 	doAction: string;
 	forUser: string;
 	hasRun: boolean;
+	recurring: boolean;
 	randomizeFactor: number;
 }
 
@@ -16,6 +17,7 @@ const TriggerSchema: Schema = new Schema(
 		doAction: { type: String, required: true },
 		forUser: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
 		hasRun: { type: Boolean, required: false, default: false },
+		recurring: { type: Boolean, required: false, default: false },
 		randomizeFactor: { type: Number, required: false }
 	},
 	{
