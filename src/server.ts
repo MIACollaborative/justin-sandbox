@@ -6,6 +6,7 @@ import Logging from './lib/Logging';
 import authorRoutes from './routes/Author';
 import bookRoutes from './routes/Book';
 import userRoutes from './routes/User';
+import triggerRoutes from './routes/Trigger';
 // TODO: unistall 'passport-oauth2' package
 var session = require('express-session');
 const passport = require('passport');
@@ -65,6 +66,8 @@ const StartServer = () => {
 	router.use('/authors', authorRoutes);
 	router.use('/books', bookRoutes);
 	router.use('/users', userRoutes);
+	// TODO: test trigger routes extensively
+	router.use('/trigger', triggerRoutes);
 
 	/** Healthcheck */
 	router.get('/ping', (req, res, next) => res.status(200).json({ message: 'pong' }));
