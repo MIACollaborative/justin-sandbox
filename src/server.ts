@@ -124,48 +124,4 @@ const StartServer = () => {
 	});
 
 	http.createServer(router).listen(config.server.port, () => Logging.info(`Server is running on port ${config.server.port}`));
-
-	// TODO: FINISH FITBIT AUTH
-	// const express = require('express');
-	// const session = require('express-session');
-	// const passport = require('passport');
-	// require('./auth');
-
-	// function isLoggedIn(req, res, next) {
-	// 	req.user ? next() : res.sendStatus(401);
-	// }
-
-	// router.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
-	// router.use(passport.initialize());
-	// router.use(passport.session());
-
-	// router.get('/', (req, res) => {
-	// 	res.send('<a href="/auth/fitbit">Authenticate with fitbit</a>');
-	// });
-
-	// router.get('/auth/fitbit', passport.authenticate('fitbit', { scope: ['email', 'profile'] }));
-
-	// router.get(
-	// 	'/auth/fitbit/callback',
-	// 	passport.authenticate('fitbit', {
-	// 		successRedirect: '/protected',
-	// 		failureRedirect: '/auth/fitbit/failure'
-	// 	})
-	// );
-
-	// router.get('/protected', isLoggedIn, (req, res) => {
-	// 	res.send(`Hello ${req.user.displayName}`);
-	// });
-
-	// router.get('/logout', (req, res) => {
-	// 	req.logout();
-	// 	req.session.destroy();
-	// 	res.send('Goodbye!');
-	// });
-
-	// router.get('/auth/fitbit/failure', (req, res) => {
-	// 	res.send('Failed to authenticate..');
-	// });
-
-	// router.listen(5000, () => console.log('listening on port: 5000'));
 };
