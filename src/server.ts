@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { NextFunction } from 'express';
 import http from 'http';
 import mongoose from 'mongoose';
 import { config } from './config/config';
@@ -7,8 +7,14 @@ import authorRoutes from './routes/Author';
 import bookRoutes from './routes/Book';
 import userRoutes from './routes/User';
 // TODO: unistall 'passport-oauth2' package
+var session = require('express-session');
 const passport = require('passport');
 require('./FitbitAuth');
+
+// TODO: replace 'any' and put in middleware/ directory
+function isFitbitLoggedIn(req: any, res: any, next: NextFunction) {
+	req.user ? next() : res.sendStatus(401);
+}
 
 const router = express();
 
@@ -63,14 +69,42 @@ const StartServer = () => {
 	/** Healthcheck */
 	router.get('/ping', (req, res, next) => res.status(200).json({ message: 'pong' }));
 
+	// TODO: source secret from config env
+	router.use(session({ secret: 'cats' }));
+	router.use(passport.initialize());
+	router.use(passport.session());
+
 	router.get('/', (req, res) => {
 		res.send('<a href="/auth/fitbit">Authenticate with fitbit</a>');
 	});
 
 	router.get('/auth/fitbit', passport.authenticate('fitbit', { scope: ['sleep'] }));
 
-	router.get('/protected', (req, res) => {
+	// TODO: test
+	router.get(
+		'/fitbit/callback',
+		passport.authenticate('fitbit', {
+			successRedirect: '/protected',
+			failureRedirect: '/auth/fitbit-failure'
+		})
+	);
+
+	// TODO: test
+	router.get('/auth/fitbit-failure', (req, res) => {
+		res.send('Failed to authenticate Fitbit..');
+	});
+
+	// TODO: test isFitbitLoggedIn middleware
+	router.get('/protected', isFitbitLoggedIn, (req, res) => {
 		res.send('Hello!');
+	});
+
+	router.get('/logout', (req, res) => {
+		// TODO: move session within function scope
+		// TODO: move auth logic into separate function and file
+		// req.logout();
+		// req.session.destroy();
+		res.send('Goodbye!');
 	});
 
 	router.listen(5000, () => console.log('listening on port: 5000'));
